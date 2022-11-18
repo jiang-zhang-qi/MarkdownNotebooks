@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<title>LR_SVM</title>
+
+
+<style type="text/css">
+body {
+  font-family: Helvetica, arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background-color: white;
+  padding: 30px; }
+
+body > *:first-child {
+  margin-top: 0 !important; }
+body > *:last-child {
+  margin-bottom: 0 !important; }
+
+a {
+  color: #4183C4; }
+a.absent {
+  color: #cc0000; }
+a.anchor {
+  display: block;
+  padding-left: 30px;
+  margin-left: -30px;
+  cursor: pointer;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0; }
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 20px 0 10px;
+  padding: 0;
+  font-weight: bold;
+  -webkit-font-smoothing: antialiased;
+  cursor: text;
+  position: relative; }
+
+h1:hover a.anchor, h2:hover a.anchor, h3:hover a.anchor, h4:hover a.anchor, h5:hover a.anchor, h6:hover a.anchor {
+  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA09pVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoMTMuMCAyMDEyMDMwNS5tLjQxNSAyMDEyLzAzLzA1OjIxOjAwOjAwKSAgKE1hY2ludG9zaCkiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6OUM2NjlDQjI4ODBGMTFFMTg1ODlEODNERDJBRjUwQTQiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6OUM2NjlDQjM4ODBGMTFFMTg1ODlEODNERDJBRjUwQTQiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo5QzY2OUNCMDg4MEYxMUUxODU4OUQ4M0REMkFGNTBBNCIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo5QzY2OUNCMTg4MEYxMUUxODU4OUQ4M0REMkFGNTBBNCIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PsQhXeAAAABfSURBVHjaYvz//z8DJYCRUgMYQAbAMBQIAvEqkBQWXI6sHqwHiwG70TTBxGaiWwjCTGgOUgJiF1J8wMRAIUA34B4Q76HUBelAfJYSA0CuMIEaRP8wGIkGMA54bgQIMACAmkXJi0hKJQAAAABJRU5ErkJggg==) no-repeat 10px center;
+  text-decoration: none; }
+
+h1 tt, h1 code {
+  font-size: inherit; }
+
+h2 tt, h2 code {
+  font-size: inherit; }
+
+h3 tt, h3 code {
+  font-size: inherit; }
+
+h4 tt, h4 code {
+  font-size: inherit; }
+
+h5 tt, h5 code {
+  font-size: inherit; }
+
+h6 tt, h6 code {
+  font-size: inherit; }
+
+h1 {
+  font-size: 28px;
+  color: black; }
+
+h2 {
+  font-size: 24px;
+  border-bottom: 1px solid #cccccc;
+  color: black; }
+
+h3 {
+  font-size: 18px; }
+
+h4 {
+  font-size: 16px; }
+
+h5 {
+  font-size: 14px; }
+
+h6 {
+  color: #777777;
+  font-size: 14px; }
+
+p, blockquote, ul, ol, dl, li, table, pre {
+  margin: 15px 0; }
+
+hr {
+  background: transparent url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAECAYAAACtBE5DAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNSBNYWNpbnRvc2giIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6OENDRjNBN0E2NTZBMTFFMEI3QjRBODM4NzJDMjlGNDgiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6OENDRjNBN0I2NTZBMTFFMEI3QjRBODM4NzJDMjlGNDgiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo4Q0NGM0E3ODY1NkExMUUwQjdCNEE4Mzg3MkMyOUY0OCIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo4Q0NGM0E3OTY1NkExMUUwQjdCNEE4Mzg3MkMyOUY0OCIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PqqezsUAAAAfSURBVHjaYmRABcYwBiM2QSA4y4hNEKYDQxAEAAIMAHNGAzhkPOlYAAAAAElFTkSuQmCC) repeat-x 0 0;
+  border: 0 none;
+  color: #cccccc;
+  height: 4px;
+  padding: 0;
+}
+
+body > h2:first-child {
+  margin-top: 0;
+  padding-top: 0; }
+body > h1:first-child {
+  margin-top: 0;
+  padding-top: 0; }
+  body > h1:first-child + h2 {
+    margin-top: 0;
+    padding-top: 0; }
+body > h3:first-child, body > h4:first-child, body > h5:first-child, body > h6:first-child {
+  margin-top: 0;
+  padding-top: 0; }
+
+a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6 {
+  margin-top: 0;
+  padding-top: 0; }
+
+h1 p, h2 p, h3 p, h4 p, h5 p, h6 p {
+  margin-top: 0; }
+
+li p.first {
+  display: inline-block; }
+li {
+  margin: 0; }
+ul, ol {
+  padding-left: 30px; }
+
+ul :first-child, ol :first-child {
+  margin-top: 0; }
+
+dl {
+  padding: 0; }
+  dl dt {
+    font-size: 14px;
+    font-weight: bold;
+    font-style: italic;
+    padding: 0;
+    margin: 15px 0 5px; }
+    dl dt:first-child {
+      padding: 0; }
+    dl dt > :first-child {
+      margin-top: 0; }
+    dl dt > :last-child {
+      margin-bottom: 0; }
+  dl dd {
+    margin: 0 0 15px;
+    padding: 0 15px; }
+    dl dd > :first-child {
+      margin-top: 0; }
+    dl dd > :last-child {
+      margin-bottom: 0; }
+
+blockquote {
+  border-left: 4px solid #dddddd;
+  padding: 0 15px;
+  color: #777777; }
+  blockquote > :first-child {
+    margin-top: 0; }
+  blockquote > :last-child {
+    margin-bottom: 0; }
+
+table {
+  padding: 0;border-collapse: collapse; }
+  table tr {
+    border-top: 1px solid #cccccc;
+    background-color: white;
+    margin: 0;
+    padding: 0; }
+    table tr:nth-child(2n) {
+      background-color: #f8f8f8; }
+    table tr th {
+      font-weight: bold;
+      border: 1px solid #cccccc;
+      margin: 0;
+      padding: 6px 13px; }
+    table tr td {
+      border: 1px solid #cccccc;
+      margin: 0;
+      padding: 6px 13px; }
+    table tr th :first-child, table tr td :first-child {
+      margin-top: 0; }
+    table tr th :last-child, table tr td :last-child {
+      margin-bottom: 0; }
+
+img {
+  max-width: 100%; }
+
+span.frame {
+  display: block;
+  overflow: hidden; }
+  span.frame > span {
+    border: 1px solid #dddddd;
+    display: block;
+    float: left;
+    overflow: hidden;
+    margin: 13px 0 0;
+    padding: 7px;
+    width: auto; }
+  span.frame span img {
+    display: block;
+    float: left; }
+  span.frame span span {
+    clear: both;
+    color: #333333;
+    display: block;
+    padding: 5px 0 0; }
+span.align-center {
+  display: block;
+  overflow: hidden;
+  clear: both; }
+  span.align-center > span {
+    display: block;
+    overflow: hidden;
+    margin: 13px auto 0;
+    text-align: center; }
+  span.align-center span img {
+    margin: 0 auto;
+    text-align: center; }
+span.align-right {
+  display: block;
+  overflow: hidden;
+  clear: both; }
+  span.align-right > span {
+    display: block;
+    overflow: hidden;
+    margin: 13px 0 0;
+    text-align: right; }
+  span.align-right span img {
+    margin: 0;
+    text-align: right; }
+span.float-left {
+  display: block;
+  margin-right: 13px;
+  overflow: hidden;
+  float: left; }
+  span.float-left span {
+    margin: 13px 0 0; }
+span.float-right {
+  display: block;
+  margin-left: 13px;
+  overflow: hidden;
+  float: right; }
+  span.float-right > span {
+    display: block;
+    overflow: hidden;
+    margin: 13px auto 0;
+    text-align: right; }
+
+code, tt {
+  margin: 0 2px;
+  padding: 0 5px;
+  white-space: nowrap;
+  border: 1px solid #eaeaea;
+  background-color: #f8f8f8;
+  border-radius: 3px; }
+
+pre code {
+  margin: 0;
+  padding: 0;
+  white-space: pre;
+  border: none;
+  background: transparent; }
+
+.highlight pre {
+  background-color: #f8f8f8;
+  border: 1px solid #cccccc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px; }
+
+pre {
+  background-color: #f8f8f8;
+  border: 1px solid #cccccc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px; }
+  pre code, pre tt {
+    background-color: transparent;
+    border: none; }
+
+sup {
+    font-size: 0.83em;
+    vertical-align: super;
+    line-height: 0;
+}
+
+kbd {
+  display: inline-block;
+  padding: 3px 5px;
+  font-size: 11px;
+  line-height: 10px;
+  color: #555;
+  vertical-align: middle;
+  background-color: #fcfcfc;
+  border: solid 1px #ccc;
+  border-bottom-color: #bbb;
+  border-radius: 3px;
+  box-shadow: inset 0 -1px 0 #bbb
+}
+
+* {
+	-webkit-print-color-adjust: exact;
+}
+@media screen and (min-width: 914px) {
+    body {
+        width: 854px;
+        margin:0 auto;
+    }
+}
+@media print {
+	table, pre {
+		page-break-inside: avoid;
+	}
+	pre {
+		word-wrap: break-word;
+	}
+}
+</style>
+
+
+</head>
+
+<body>
+
+<h1 id="toc_0">Logistic Regression and Support Vector Mechine</h1>
+
+<!--
+姜璋琪
+2022年11月1日
+
+关于SVM的故事,还是要从Logistic Regression说起...
+-->
+
+<!--让Table居中显示-->
+
+<style>
+table
+{
+    margin: auto;
+}
+</style>
+
+<h2 id="toc_1">1 Logistic Regression (LR)</h2>
+
+<p>LR是一种基于Sigmoid函数的分类方法.从直观上看,LR是在拟合两类数据点之间的分界线(<mark>决策边界</mark>),或者说是在寻找一个边界使得两类数据点被该边界很好的分开(当然,大部分分类算法都是这样去做的)；从形式上看,LR是一种概率判别式模型,因为该算法直接对条件概率\( P(y=1|\mathbf{x};\boldsymbol{\theta}) \)进行建模.</p>
+
+<h3 id="toc_2">1.1 LR的假设表示(Hypothesis Representation)</h3>
+
+<p>LR基于Sigmoid函数
+\[ f(z) = \frac{1}{1+e^{-z}}, \]</p>
+
+<p><center>
+    <img src="https://raw.githubusercontent.com/jiang-zhang-qi/MarkdownNotebooks/main/LR_SVM/Figures/figure1_1_Sigmoid.png" style="zoom:25%" />
+    <br>
+    <div style="color:orange; border-bottom: 1px solid #d9d9d9;
+    display: inline-block;
+    color: #999;
+    padding: 2px;">Fig. 1.1. Sigmoid Function在[-10,10]上的函数图像</div>
+    </br>
+</center></p>
+
+<p>提出了LR模型的假设表示\(h_{\theta}(x)\)：
+\[ h_{\theta}(\mathbf{x}) = f(\boldsymbol{\theta}^{T}\mathbf{x}) = \frac{1}{1+e^{-\boldsymbol{\theta}^{T}\mathbf{x}}}, \]
+其中 \(\boldsymbol{\theta}=(b,\theta_{1},\theta_{2},...,\theta_{n})^{T}, \mathbf{x}=({1,x_{1},x_{2},...,x_{n}})^{T}\).</p>
+
+<p>于是,我们自然要提问：<strong>为什么是Sigmoid函数？他有什么好处让我选择他作为我的模型假设？</strong></p>
+
+<p><strong>第一点,合乎概率测度的定义.</strong>我们前面说我们使用Logistic Regression实际上是对条件概率\( P(y=1|\mathbf{x};\boldsymbol{\theta}) \)进行建模的,但是概率值只能在\([0, 1]\)闭区间内,而Sigmoid函数刚好符合这一要求,他的值域是\((0, 1)\).所以,实际上这里\(h_{\theta}(\mathbf{x})\)的作用就相当于在参数\(\theta\)的条件下为每一个输入\(\mathbf{x}\)预测他的条件概率\( P(y=1|\mathbf{x};\boldsymbol{\theta}) \).</p>
+
+<p><strong>第二点,简单.</strong>相比于其他的非线性函数,Sigmoid函数的导数在计算机上实现起来更简单,因此在用梯度下降法优化的时候更方便.
+\[ f^{&#39;}(z) = f(z)(1-f(z)).\]</p>
+
+<p><strong>第三点,更稳健一点.</strong>这是相比于线性函数来说的,假如我们有如Figure 1.2(a)的一维观测数据,然后对条件概率拟合了一条蓝色直线\(h(x)\),希望通过 \(y=1 \quad if \quad h(x) &gt; 0.5 \quad else \quad y=0\) 这样的判别条件去进行分类.但是,此时如果出现了一个离群值如Figure 1.2(b)所示,那么我们拟合出来的曲线将可能会是红色直线所示.与蓝色直线相比,此时我们选择判别条件的临界值可能要在\(0.2, 0.3\)左右,而且我们从图上也可以很直观的感受到两条直线之间的变化是很大的.而如果用Sigmoid函数来进行建模的话,离群值带来的影响将会小很多,如Figure 1.2中粉色曲线所示.</p>
+
+<table>
+<thead>
+<tr>
+<th style="text-align: center"><img src="https://raw.githubusercontent.com/jiang-zhang-qi/MarkdownNotebooks/main/LR_SVM/Figures/figure1_2_a_linear_sigmoid.png" style="zoom:75%"/></th>
+<th style="text-align: center"><img src="https://raw.githubusercontent.com/jiang-zhang-qi/MarkdownNotebooks/main/LR_SVM/Figures/figure1_2_b_linear_sigmoid.png" style="zoom:75%"></th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td style="text-align: center">(a)</td>
+<td style="text-align: center">(b)</td>
+</tr>
+</tbody>
+</table>
+
+<p><center>
+    <br>
+    <div style="color:orange; border-bottom: 1px solid #d9d9d9;
+    display: inline-block;
+    color: #999;
+    padding: 2px;">Fig. 1.2. Linear Function和Sigmoid Function之间的稳定性比较</div>
+    </br>
+</center></p>
+
+<p><strong>第四点(个人原因),更符合我对于分类的直观映象.</strong> 因为常说量变引起质变嘛,我认为Sigmoid曲线更好地刻画了这一说法.我们去寻找分类的方法,实际上在寻找引起突变的那个点(临界值).Sigmoid函数也常被用于去简单地刻画当资源有限的时候群落(人口)发展规律.</p>
+
+<h3 id="toc_3">1.2 LR的决策边界(Decision Boundary)</h3>
+
+<p>我们已经从理论分析上得知Sigmoid函数实际上在对条件概率进行建模.现在,我们想从几何直观上去看一下LR到底学习到了什么？</p>
+
+<p>观察\(h_{\theta}(x)\)可以看到,LR的模型假设实际上是在线性函数(\(\boldsymbol{\theta}^{T}\mathbf{x}\))上套了一层非线性函数(Sigmoid函数).假设现在有二维的如Figure 1.3(a)所示的待分类数据集(i.e. 输入向量\(\mathbf{x}=(x_{1}, x_{2})^{T}\)),我们已经通过某个算法按照判别条件：
+\[ y=1 \quad if \quad h(x) &gt; 0.5 \quad else \quad y=0, \]
+学得了在该数据集上的LR,那么现在我们可以通过临界值把这个线性函数反解出来：
+\[\frac{1}{1+e^{-\boldsymbol{\theta}^{T}\mathbf{x}}} = 0.5\]
+于是有,
+\[ e^{-\boldsymbol{\theta}^{T}\mathbf{x}} = 1 \]
+两边取对数有,
+\[
+\begin{align}
+\boldsymbol{\theta}^{T}\mathbf{x} = -ln(1) \iff b + \theta_{1}x_{1} + \theta_{2}x_{2} = 0. \tag{1.1}
+\end{align}
+\]
+诶,式(1.1)这不就是一条直线嘛,我们现在把他画出来看看这条直线意味着什么？如Figure 1.3(b)蓝色直线所示.</p>
+
+<table>
+<thead>
+<tr>
+<th style="text-align: center"><img src="https://raw.githubusercontent.com/jiang-zhang-qi/MarkdownNotebooks/main/LR_SVM/Figures/figure1_3_a_decisionBoundary.png" style="zoom:75%"/></th>
+<th style="text-align: center"><img src="https://raw.githubusercontent.com/jiang-zhang-qi/MarkdownNotebooks/main/LR_SVM/Figures/figure1_3_b_decisionBoundary.png" style="zoom:75%"></th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td style="text-align: center">(a)</td>
+<td style="text-align: center">(b)</td>
+</tr>
+</tbody>
+</table>
+
+<p><center>
+    <br>
+    <div style="color:orange; border-bottom: 1px solid #d9d9d9;
+    display: inline-block;
+    color: #999;
+    padding: 2px;">Fig. 1.3. LR的几何直观——决策边界</div>
+    </br>
+</center></p>
+
+<p>我们会发现LR学出来的这条直线能很好地把两类点分开.按照线性规划的方法,我们发现原先的判别条件就转化为了
+\[ y = 1 \quad if \quad b + \theta_{1}x_{1} + \theta_{2}x_{2} &gt; 0 \quad else \quad y=0,\]
+这意味着我们可以直接用LR学出来的这条直线对数据点进行分类(i.e.在该线上方的点分类成1,下方的点分类成0),于是我们就把这条LR学出来的曲线\(\boldsymbol{\theta}^{T}\mathbf{x}\)称为<strong>决策边界(Decision Boundary)</strong>.所以我们从几何直观上看LR,<strong>LR实际上是在找一条比较好的决策边界</strong>！</p>
+
+<h3 id="toc_4">1.3 LR的损失函数(Cross Entropy)</h3>
+
+<p>李航老师在《统计学习方法》一书中说到,统计学习方法的三要素是：<strong>模型(Model)、策略(Strategy)和算法(Algorithm)</strong>,LR模型在1.1和1.2节中已经阐明了,接下来我们来看一下LR常用的策略,这里的策略也就是指导我们如何选择最优模型的准则(Criterion).</p>
+
+<p>交叉熵(Cross Entropy)常被当作LR的优化策略,其定义如下：
+\[ J(\boldsymbol{\theta}) = -\frac{1}{N}\sum_{i=1}^{N}(y_{i}log(h_{\theta}(\mathbf{x}_{i})) + (1-y_{i})log(1-h_{\theta}(\mathbf{x}_{i}))), \tag{1.2}\]
+其中\(x_{i}\)和\(y_{i}\)分别是数据集中第\(i\)个样本的输入向量和标签,\(N\)是数据集中样本的个数.从最小化损失函数的角度来看,如果当\(y_{i}=1\)的时候,为了降低整体的Loss我们会希望\(h_{\theta}(x_{i})\)趋向于1,也就是让条件概率趋于1,反之当\(y_{i}=0\)的时候,我们会希望\(h_{\theta}(x_{i})\)趋向于0.交叉熵Loss是从信息论里面延伸过来的,在信息论里面,我们可以把交叉熵当作是度量两个概率分布\(P\)和\(Q\)之间“距离”的工具.那么我们知道LR实际上是对条件概率建模的,而学得的\(h_{\theta}(x)\)就是拟合出来的分布,而\(\mathcal{y}_{i} \in \{0, 1\} (1 \leq i \leq N)\)可以看做是真实分布.所以我们<strong>最小化交叉熵Loss实际上在缩小拟合分布\(h_{\theta}(x_{i})\)与真实分布\(y_{i}\)之间的“距离”</strong>.</p>
+
+<h3 id="toc_5">1.4 交叉熵的(批)梯度下降优化方法((batch) Gradient Decent)</h3>
+
+<p>最后是寻找最优模型的算法.一般常用的是梯度下降法GD,这里的batch是指梯度按照一批样本一批样本更新,是相对于随机梯度下降法(Stochastic Gradient Decent)按照一个样本一个样本更新梯度来说的.他的参数更新公式如下：
+\[ \theta_{j} := \theta_{j} - \alpha \frac{\partial{J(\boldsymbol{\theta})}}{\partial{\theta_{j}}} \quad for \quad 1 \leq j \leq N,\]
+特别地,对于偏置项来说,
+\[ b := b - \alpha \frac{\partial{J(\boldsymbol{\theta})}}{\partial{b}},\]
+其中\(\alpha\)是学习率(learning rate),可以看做是对“新知识”的接受程度.我们把(2)式带入,详细推导过程如下：
+\[
+\begin{align}
+\frac{\partial{J(\boldsymbol{\theta})}}{\partial{\theta_{j}}} &amp; = -\frac{1}{N} \sum_{i=1}^{N}(y_{i} \frac{1}{h_{\theta}(\mathbf{x}_{i})} h_{\theta}(\mathbf{x}_{i}) (1-h_{\theta}(\mathbf{x}_{i})) x_{i}^{(j)} - (1-y_{i}) \frac{1}{1 - h_{\theta}(\mathbf{x}_{i})} h_{\theta}(\mathbf{x}_{i}) (1 - h_{\theta}(\mathbf{x}_{i})) x_{i}^{(j)}) \\
+&amp; = -\frac{1}{N} \sum_{i=1}^{N} (y_{i}(1-h_{\theta}(\mathbf{x}_{i})) x_{i}^{(j)} + y_{i}h_{\theta}(\mathbf{x}_{i})x_{i}^{(j)} - h_{\theta}(\mathbf{x}_{i})x_{i}^{(j)}) \\
+&amp; = \frac{1}{N} \sum_{i=1}^{N} (h_{\theta}(\mathbf{x}_{i}) - y_{i})x_{i}^{(j)}, \tag{1.3}
+\end{align}
+ \]
+其中\(\mathbf{x}_{i}\)和\(x_{i}^{j}\)分别为第\(i\)个样本的输入向量和第\(i\)个样本输入向量的第\(j\)个分量,\(y_{i}\)表示第\(i\)个样本的类别.第一个等号用到了\(h_{\theta}^{&#39;}(\mathbf{x}_{i}) = h_{\theta}(\mathbf{x}_{i}) (1 - h_{\theta}(\mathbf{x}_{i})), \quad log(h_{\theta}(\mathbf{x}_{i})) = \frac{1}{h_{\theta}(\mathbf{x}_{i})}\).同理可以推出关于偏置项的偏导：
+\[ \frac{\partial{J(\boldsymbol{\theta})}}{\partial{b}} = \frac{1}{N} \sum_{i=1}^{N} (h_{\theta}(\mathbf{x}_{i}) - y_{i}). \tag{1.4}\]
+将(1.3)、(1.4)式带入更新公式并写成向量形式,就可以得到我们在写代码的时候常用的格式了：
+\[ 
+\begin{align}
+\boldsymbol{\theta} &amp;:= \boldsymbol{\theta} - \alpha  \frac{1}{N} \sum_{i=1}^{N} (h_{\theta}(\mathbf{x}_{i}) - y_{i}) \mathbf{x}_{i}, \\
+b &amp; := b - \alpha \frac{1}{N} \sum_{i=1}^{N} (h_{\theta}(\mathbf{x}_{i}) - y_{i}).
+\end{align}
+\]</p>
+
+<h2 id="toc_6">2 Support Vector Machine (SVM)</h2>
+
+<p>在这里提到的SVM模型均为最初的<strong>线性核函数SVM</strong>！</p>
+
+<h3 id="toc_7">2.1 SVM在干什么？</h3>
+
+<p>我们从几何直观出发.LR的决策边界启发我们：要去分类样本,直观上就是找一个超平面使得两类数据点能被该超平面很好地划分开.但这时候就遇到了一个问题(如Figure 2.1所示)：对于一群数据点,如果我能找到很多个超平面去分割这两类点,那么我应该选择哪个超平面呢？SVM选择了从<strong>“安全性”/鲁棒性</strong>的角度去回答这个问题——<strong>我让超平面离两类点的间隔大一点,这样一来即使统计出来的数据存在噪声,超平面也能容忍这些噪声的存在,使得分类预测更稳健</strong>(就像Figure 2.1中的红色直线所示).(PS：我们也许能从其他需求去考虑怎么选择超平面,来构造不同的算法.毕竟对于同一个问题每个人都可能会做出不同的选择,因为出发点/立场不同.)</p>
+
+<p><center>
+    <img src="https://raw.githubusercontent.com/jiang-zhang-qi/MarkdownNotebooks/main/LR_SVM/Figures/figure2_1.png" style="zoom:15%" />
+    <br>
+    <div style="color:orange; border-bottom: 1px solid #d9d9d9;
+    display: inline-block;
+    color: #999;
+    padding: 2px;">Fig. 2.1. 不同的超平面</div>
+    </br>
+</center></p>
+
+<p>我们再从理论角度去看看SVM的动机.从决策边界的角度看,LR要求当\(y=0\)的时候希望\(\boldsymbol{\theta}^{T}\mathbf{x} &lt; 0\)；当\(y=1\)的时候希望\(\boldsymbol{\theta}^{T}\mathbf{x} &gt; 0\),但是他没有要求\(\boldsymbol{\theta}^{T}\mathbf{x}\)距离\(0\)要多远！有可能会出现标签\(y_{i}=0\),但是由于噪声的存在使得最终判别式\(\boldsymbol{\theta}^{T}\mathbf{x}_{i}^{&#39;} &gt; 0\)的情况,这实际上是我们不希望的(从安全性角度).因此,我们就会去考虑：当\(y=0\)的时候,让\(\boldsymbol{\theta}^{T}\mathbf{x}\)小于等于某个负常数；当\(y=1\)的时候,让\(\boldsymbol{\theta}^{T}\mathbf{x}\)大于等于某个正常数,让他们的值更加分离一些这样的方法去应对噪声.SVM也正是这样去做的！</p>
+
+<h3 id="toc_8">2.2 硬间隔(Hard Margin)SVM</h3>
+
+<p>现在,让我们去看一下SVM是如何最大化间隔的！
+我们先做一些记号上的约定：给定的训练样本集\(\mathcal{D} = \{(\mathbf{x}_{1},y_{1}),(\mathbf{x}_{2},y_{2}),\cdots,(\mathbf{x}_{m},y_{m})\},\quad y_{i} \in \{-1, +1\},\)样本空间中的超平面方程\(\pi : \mathbf{w}^{T}\mathbf{x}+b=0,\) 其中\(\mathbf{w}=(w_{1},w_{2},\cdots,w_{d})\)为该超平面的法向量；\(b\)为位移项,决定了超平面与原点之间的距离.由点到面的距离公式可知,样本空间中任意一点\(\mathbf{x}\)到超平面的距离可以表示为：
+\[ r = \frac{|\mathbf{w}^{T}\mathbf{x}+b|}{||\mathbf{w}||_{2}}. \tag{2.1}\]
+假设超平面\(\pi\)能将训练样本完美分开(i.e.当\(y=+1\)时,\(\mathbf{w}^{T}\mathbf{x}+b &gt; 0\)；当\(y=-1\)时,\(\mathbf{w}^{T}\mathbf{x}+b &lt; 0\)).此时,按照2.1中所说,我们为了应对噪声需要对这个分类条件进一步限制为：
+\[
+\begin{cases}
+\mathbf{w}^{T}\mathbf{x}_{i}+b \geq +1,&amp; \quad y_{i} = +1; \\
+\mathbf{w}^{T}\mathbf{x}_{i}+b \leq -1,&amp; \quad y_{i} = -1. \tag{2.2}
+\end{cases}
+\]</p>
+
+<blockquote>
+<p>关于这个不等式约束,我有以下观察和思考：</p>
+
+<ul>
+<li>为什么是+1和-1,为什么不能限制更大一点+2和-2或者其他数对呢？</li>
+</ul>
+
+<p>答：只要是形如\(-c,+c\)的形式,不管\(c\)取什么值,我都可以在两个不等式两边同时乘上一个“压缩因子”\(\beta\)使得\(-c,+c\)化为\(-1,+1\)形式.所以我们就直接取\(-1,+1\)这样的一般形式了.</p>
+
+<ul>
+<li>为什么要是\(-c,+c\)这样的形式,不能是\(-a,+b\)这样的形式嘛？</li>
+</ul>
+
+<p>答：我个人认为也许也是可以的,但此时“压缩因子”就失效了.我认为标签\(y\)只是起到了标识的作用,其本身的数字是什么应该没有实际意义,只要不同的标签是不同的数字就行.那么我总能取\(y_{i} \in \{-\frac{1}{a}, \frac{1}{b}\}\)使得他仍然具有SVM推导的形式\(y_{i}(\mathbf{w}^{T}\mathbf{x}_{i}+b) \geq 1\).但需要注意的是,此时的超平面对于两类点的间隔大小是不同的(i.e.超平面对于两类点的噪声的容忍程度是不同的),可能是Figure 2.2所示的间隔.这也许能去处理样本类别不平衡的问题？
+<center>
+   <img src="https://raw.githubusercontent.com/jiang-zhang-qi/MarkdownNotebooks/main/LR_SVM/Figures/figure2_2.png" style="zoom:15%" />
+   <br>
+   <div style="color:orange; border-bottom: 1px solid #d9d9d9;
+   display: inline-block;
+   color: #999;
+   padding: 2px;">Fig. 2.2. 不同间隔大小的SVM示意图</div>
+   </br>
+</center></p>
+</blockquote>
+
+<p>有了式(2.2)的限制,我们就可以得到如下不等式：
+\[ r = \frac{|\mathbf{w}^{T}\mathbf{x}+b|}{||\mathbf{w}||_{2}} \geq \frac{1}{||\mathbf{w}||_{2}}. \tag{2.3}\]
+距离超平面最近的这几个输入向量使得式(2.3)中不等号的等号成立,这些输入向量被称作<strong>支持向量(Support Vector)</strong>,如Figure 2.3 中圆圈正号和圆圈负号所示,这也是这个模型名字的由来.
+<center>
+    <img src="https://raw.githubusercontent.com/jiang-zhang-qi/MarkdownNotebooks/main/LR_SVM/Figures/figure2_3.png" style="zoom:15%" />
+    <br>
+    <div style="color:orange; border-bottom: 1px solid #d9d9d9;
+    display: inline-block;
+    color: #999;
+    padding: 2px;">Fig. 2.3. SVM决定的超平面,圆圈正号代表阳性支持向量,圆圈负号代表阴性支持向量</div>
+    </br>
+</center></p>
+
+<blockquote>
+<p>但是这里有个问题：</p>
+
+<ul>
+<li>为什么总是存在恰好在间隔边界上的支持向量呢？也就是为什么总存在向量出现在Figure 2.3中蓝色虚线上？</li>
+</ul>
+
+<p>答：我认为这个问题其实和上一个Block中的第一点是一样的.我们知道\(+c,-c\)这样的形式只是决定了间隔大小,但是我们始终能把间隔大小放缩成单位1,那么同理,不管你的阳性(阴性)样本离超平面有多远,我都可以乘上一个“压缩因子”\(\beta\)让间隔边界去找到离超平面最近的这几个输入向量,使其成为支持向量.所以支持向量总是会存在的.</p>
+</blockquote>
+
+<p>在后面引入KKT条件的时候,我们会进一步说明：SVM学到的超平面只与支持向量有关,与其他非支持向量的输入向量无关！两个分属于不同类别的支持向量被称为<em>一对异类支持向量</em>,一对异类支持向量到超平面的距离之和为
+\[ \gamma = \frac{2}{||\mathbf{w}||_{2}}, \tag{2.3}\]
+\(\gamma\)就是我们此前一直谈论的<strong>间隔(margin)</strong>.
+SVM的目标是找到具有最大间隔的超平面,也就是找到参数\(\mathbf{w}, b\)使得\(\gamma\)最大.那么就转化为了如下的最优化问题：
+\[
+\begin{align}
+&amp; \max_{\mathbf{w},b} \quad \frac{2}{||\mathbf{w}||_{2}} \tag{2.4} \\
+&amp; s.t. \quad y_{i}(\mathbf{w}^{T}\mathbf{x}_{i}+b) \geq 1, \quad i=1, 2, \cdots, m.
+\end{align}
+\]
+由于,
+\[ ||\mathbf{w}||_{2} &gt; 0,\]
+则
+\[ \max_{\mathbf{w},b} \quad \frac{2}{||\mathbf{w}||_{2}} \quad \Leftrightarrow \quad \min_{\mathbf{w},b} \quad \frac{1}{2}||\mathbf{w}||_{2},\]
+于是,我们有
+\[
+\begin{align}
+&amp; \min_{\mathbf{w},b} \quad \frac{1}{2}||\mathbf{w}||_{2} \tag{2.5} \\
+&amp; s.t. \quad 1 - y_{i}(\mathbf{w}^{T}\mathbf{x}_{i}+b) \leq 0, \quad i=1, 2, \cdots, m.
+\end{align}
+\]
+利用带有不等式约束的Lagrange乘子法,构造Lagrange函数：
+\[ \mathcal{L}(\mathbf{w}, b, \mathbf{\alpha}) = \frac{1}{2}||\mathbf{w}||_{2} + \sum_{i=1}^{m}\alpha_{i}(1-y_{i}(\mathbf{w}^{T}\mathbf{x}_{i}+b)), \tag{2.6}\]
+其中\(\alpha_{i} \geq 0\)为Lagrange乘子.对\(\mathcal{L}(\mathbf{w}, b, \mathbf{\alpha})\)分别关于\(\mathbf{w}, b\)求偏导,并使偏导为\(0\)：
+\[
+\begin{align}
+\frac{\partial \mathcal{L}(\mathbf{w}, b, \boldsymbol{\alpha})}{\partial \mathbf{w}} &amp; = \frac{\partial}{\partial \mathbf{w}} \frac{1}{2}\mathbf{w}^{T}\mathbf{w} - \sum_{i=1}^{m} \alpha_{i}y_{i} \frac{\partial}{\partial \mathbf{w}} \mathbf{w}^{T}\mathbf{x}_{i} \\
+&amp; = \mathbf{w} - \sum_{i=1}^{m}\alpha_{i}y_{i}\mathbf{x}_{i},\\
+\frac{\partial \mathcal{L}(\mathbf{w}, b, \boldsymbol{\alpha})}{\partial b} &amp; = -\sum_{i=1}^{m} \frac{\partial}{\partial b}\alpha_{i}y_{i}b \\
+&amp; = -\sum_{i=1}^{m} \alpha_{i}y_{i},
+\end{align}
+\]
+第二个等号用到了\(\frac{\partial \mathbf{w}^{T}\mathbf{w}}{\partial \mathbf{w}} = 2\mathbf{w}, \frac{\partial \mathbf{w}^{T}\mathbf{x}}{\partial \mathbf{w}} = \mathbf{x}\),于是有
+\[
+\begin{align}
+\mathbf{w} &amp; = \sum_{i=1}^{m}\alpha_{i}y_{i}\mathbf{x}_{i}, \tag{2.7} \\
+0 &amp; = \sum_{i=1}^{m} \alpha_{i}y_{i}. \tag{2.8}
+\end{align}
+\]
+将(2.7),(2.8)式带入(2.6)式有
+\[
+\begin{align}
+\mathcal{L}(\mathbf{w}, b, \boldsymbol{\alpha}) &amp; = \frac{1}{2} (\sum_{i=1}^{m}\alpha_{i}y_{i}\mathbf{x}_{i}^{T})(\sum_{j=1}^{m}\alpha_{j}y_{j}\mathbf{x}_{j}) + \sum_{i=1}^{m} \alpha_{i} - \sum_{i=1}^{m} \alpha_{i}y_{i}(\sum_{j=1}^{m}\alpha_{j}y_{j}\mathbf{x}_{j}^{T})\mathbf{x}_{i} - b \sum_{i=1}^{m} \alpha_{i}y_{i} \\
+&amp; = \sum_{i=1}^{m} \alpha_{i} - \frac{1}{2}\sum_{i=1}^{m}\sum_{j=1}^{m}\alpha_{i}\alpha_{j}y_{i}y_{j}\mathbf{x}_{i}^{T}\mathbf{x}_{j}, \tag{2.9}
+\end{align}
+\]
+其中第二个等号用到了有限和式的分配律\((\sum_{i=1}^{m}\alpha_{i}y_{i}\mathbf{x}_{i}^{T})(\sum_{j=1}^{m}\alpha_{j}y_{j}\mathbf{x}_{j}) = \sum_{i=1}^{m}\sum_{j=1}^{m}\alpha_{i}\alpha_{j}y_{i}y_{j}\mathbf{x}_{i}^{T}\mathbf{x}_{j}.\)再对(2.9)式取关于\(\mathbf{w}\)和\(b\)的下确界,从构造出Lagrange“对偶函数”(dual function)：
+\[ \mathbb{L}(\boldsymbol{\alpha}) = \inf_{\mathbf{w}, b} \sum_{i=1}^{m} \alpha_{i} - \frac{1}{2}\sum_{i=1}^{m}\sum_{j=1}^{m}\alpha_{i}\alpha_{j}y_{i}y_{j}\mathbf{x}_{i}^{T}\mathbf{x}_{j}, \tag{2.10}\]
+由于(2.10)式并没有\(\mathbf{w},b\)项,所以带有不等式约束的最小化问题(2.5)的Lagrange对偶问题可直接写为：
+\[
+\begin{align}
+\max_{\boldsymbol{\alpha}} \mathbb{L}(\boldsymbol{\alpha}) = &amp; \max_{\boldsymbol{\alpha}} \sum_{i=1}^{m} \alpha_{i} - \frac{1}{2}\sum_{i=1}^{m}\sum_{j=1}^{m}\alpha_{i}\alpha_{j}y_{i}y_{j}\mathbf{x}_{i}^{T}\mathbf{x}_{j} \tag{2.11} \\
+&amp; s.t. \quad \sum_{i=1}^{m} \alpha_{i}y_{i} = 0\\
+&amp; \quad \quad \alpha_{i} \geq 0, \quad i=1,2,\cdots,m.
+\end{align}
+\]
+式(2.11)实际上是一个二次规划问题,我们仍然可以使用Lagrange乘子法等二次规划算法求解这个最大化问题.解出\(\boldsymbol{\alpha}\)之后,我们就可以确定\(\mathbf{w}\)和\(b\)了：</p>
+
+<p>\(\mathbf{w}\)我们可以直接通过(2.7)式确定.关于求解\(b\)我们需要用到不等式约束(2.2)及其等号成立条件.对于支持向量\(\mathbf{x}_{i}\),我们有如下等式成立
+\[ y_{i}(\mathbf{w}^{T}\mathbf{x}_{i}+b) = 1,\]
+所以我们可以选择一个支持向量然后反解出\(b\)就行了.但是这样的做法有个缺陷,万一我们选的支持向量比较“偏门”,导致对\(b\)产生很大影响,最终影响SVM的表现.因此,在实际运用过程中,我们会将所有支持向量对应的\(b\)解出来然后取均值(更鲁棒,相比于只选取单个支持向量来说)：
+\[ b = \frac{1}{|\mathcal{S}|} \sum_{\mathbf{x}_{k} \in \mathcal{S}} (\frac{1}{y_{k}}-\mathbf{w}^{T}\mathbf{x}_{k}), \tag{2.12}\]
+其中\(\mathcal{S}\)代表所有支持向量组成的集合;\(|\mathcal{S}|\)表示集合\(\mathcal{S}\)的元素个数.于是最终的超平面方程可以写为：
+\[
+\begin{align}
+h(\mathbf{x}) &amp; = \mathbf{w}^{T}\mathbf{x} + b \\
+&amp; = \sum_{i=1}^{m} \alpha_{i}y_{i}\mathbf{x}_{i}^{T}\mathbf{x} + \frac{1}{|\mathcal{S}|} \sum_{\mathbf{x}_{k} \in \mathcal{S}} (\frac{1}{y_{k}}-\mathbf{w}^{T}\mathbf{x}_{k}). \tag{2.13}
+\end{align}
+\]
+由于最优化问题(2.5)带有不等式约束条件,则其解必须满足Karush-Kuhn-Tucker(KKT)条件：
+\[
+\begin{cases}
+1-y_{i}(\mathbf{w}^{T}\mathbf{x}_{i} + b) \leq 0, \\
+\alpha_{i} \geq 0, \tag{2.14} \\
+\alpha_{i}(1-y_{i}(\mathbf{w}^{T}\mathbf{x}_{i} + b)) = 0, \quad i=1,2,\cdots,m.
+\end{cases}
+\]
+观察KKT条件,我们能发现一件有趣的事情：当\(\alpha_{i} &gt; 0\)的时候,必有\(1-y_{i}(\mathbf{w}^{T}\mathbf{x}_{i} + b)=0\)；当\(1-y_{i}(\mathbf{w}^{T}\mathbf{x}_{i} + b) &gt; 0\)的时候,必有\(\alpha_{i} = 0\).第一种情况说明当\(\alpha_{i} &gt; 0\)的时候,下标\(i\)所对应的输入向量\(\mathbf{x}_{i}\)必为支持向量；第二种情况说明,当输入向量\(\mathbf{x}_{i}\)不为支持向量的时候,必有Lagrange乘子\(\alpha_{i} = 0\).我们现在再去观察(2.13)式,发现最终的超平面方程只由支持向量决定,与非支持向量无关！这是SVM一个十分重要的特性：<strong>当优化问题(2.11)解出来之后,最终的超平面方程只与支持向量有关,其他的非支持向量就可以“扔掉了”！</strong></p>
+
+<h3 id="toc_9">2.3 Sequential Minimal Optimization算法</h3>
+
+<p>我们之前说(2.11)是个二次规划问题,可以用Lagrange乘子法去解决,但是这有个缺陷,当数据量非常大的时候,Lagrange乘子算法可能需要很长的时间才能算出(2.11)的解.这就刺激我们去寻找应对这个问题的算法——SMO算法.</p>
+
+<p>SMO算法的核心思想是<strong>Sequential</strong>,他通过迭代优化“木桶”的短板部分,使得“木桶”能装更多水！没有额外看SMO推导的过程,这里用伪代码的形式看一下他的优化流程.SMO算法迭代执行下述两个步骤直至算法收敛或者迭代次数超过上限.</p>
+
+<ul>
+<li>选取一对需要更新的乘子\(\alpha_{i}\)和\(\alpha_{j}\)；</li>
+<li>固定除了\(\alpha_{i}\)和\(\alpha_{j}\)以外的参数,求解(2.11)式获得更新后的\(\alpha_{i}^{*}\)和\(\alpha_{j}^{*}\).</li>
+</ul>
+
+<blockquote>
+<p>两个问题：</p>
+
+<ul>
+<li>为什么要选择一对？选一个不行吗？</li>
+</ul>
+
+<p>答：最少选一对,因为如果你选择优化一个乘子\(\alpha_{i}\),固定其他乘子的话,根据(2.11)的第一个限制条件我可以反解出\(\alpha_{i}\),这也意味着我的\(\alpha_{i}\)值固定了,就没有办法优化了.</p>
+
+<ul>
+<li>怎么选择这样的一对？随机嘛？</li>
+</ul>
+
+<p>答：SMO选择了一种启发式选择方法：选择间隔最大的两个输入向量对应的乘子.</p>
+</blockquote>
+
+<h3 id="toc_10">2.4 软间隔(Soft Margin)SVM</h3>
+
+<p>我们现在反思一下2.2节中所呈现的硬间隔SVM算法,我们发现他的优化问题(2.5)的约束条件过于苛刻,他要求最终的超平面对每个样本都满足\(1 - y_{i}(\mathbf{w}^{T}\mathbf{x} + b) \leq 0\),也就意味着<strong>硬间隔SVM假设所有样本能被一个超平面完美的线性分离</strong>(这也是称2.2中的模型为硬间隔SVM的原因),如Figure 2.1中红线所示的那样.但是这样的假设过于苛刻,在很多实际情况中,我们并没有这么好的数据集,更多情况下是如Figure 2.4中的数据分布.对于理论上就不存在一个完美超平面的数据集我们应该怎么办呢？
+<center>
+    <img src="https://raw.githubusercontent.com/jiang-zhang-qi/MarkdownNotebooks/main/LR_SVM/Figures/figure2_4.png" style="zoom:80%" />
+    <br>
+    <div style="color:orange; border-bottom: 1px solid #d9d9d9;
+    display: inline-block;
+    color: #999;
+    padding: 2px;">Fig. 2.4. 不存在完美超平面的数据集</div>
+    </br>
+</center>
+缓解硬约束条件带来的限制的一种方法是<strong>允许算法在一些样本上出错,同时希望出错的样本尽可能少</strong>.于是我们就可以把硬约束条件放到目标函数里去,再引入一个权重\(C\)去平衡两个目标(我感觉这个方法是优化问题里多目标优化的一种迁移).此时原优化问题(2.5)可以写为：
+\[
+\min_{\mathbf{w}, b} \frac{1}{2} ||\mathbf{w}||_{2} + C\sum_{i=1}^{m}\mathcal{l}_{0/1}(y_{i}(\mathbf{w}^{T}\mathbf{x} + b) - 1), \tag{2.15}
+\]
+其中\(\mathcal{l}_{0/1}(z) = 1 \quad if \quad z &lt; 0 \quad else \quad 0\).但是\(\mathcal{l}_{0/1}(z)\)有不连续、非下凸等不太好的数学性质,因此在实际使用的时候人们常用下述三个“替代函数”替代\(\mathcal{l}_{0/1}(z)\)
+\[
+\begin{cases}
+hinge损失函数:\mathcal{l}_{hinge}(z) = max(0, 1-z), \\
+指数损失(Exponential \quad Loss):\mathcal{l}_{exp}(z) = exp(-z), \\
+Logistic \quad Loss: \mathcal{l}_{log}(z) = log(1+exp(-z)).
+\end{cases}
+\]</p>
+
+<h3 id="toc_11">2.5 用软间隔的角度去看LR</h3>
+
+<p>2.4节中的一个替代函数中叫Logistic Loss,我们去看一下这个损失函数和LR之间有什么关系？我们先回顾一下LR中的交叉熵(1.2)：
+\[
+J(\boldsymbol{\theta}) = -\frac{1}{N}\sum_{i=1}^{N}(y_{i}log(h_{\theta}(\mathbf{x}_{i})) + (1-y_{i})log(1-h_{\theta}(\mathbf{x}_{i}))).
+\]
+在LR的时候我们假设\(y_{i} \in \{0, +1\}\),按照之前所设想的标签只是用于区分类别,其具体数值没有实际意义的话,我们不妨假设\(\hat{y_{i}} \in \{-1, +1\}\).那么单个样本的loss可改写为：</p>
+
+<p>\( 1^{o}. \quad y_{i}=0 \quad (\hat{y_{i}}=-1): \)
+\[
+\begin{align}
+-(1-y_{i})log(1-h_{\theta}(\mathbf{x}_{i})) &amp; = -log(1-\frac{1}{1+e^{-\boldsymbol{\theta}^{T}\mathbf{x}_{i}}}) \\
+&amp; = log(1+e^{\boldsymbol{\theta}^{T}\mathbf{x}_{i}}) \\
+&amp; = log(1+e^{-\hat{y_{i}}\boldsymbol{\theta}^{T}\mathbf{x}_{i}}), \tag{2.16}
+\end{align}
+\]
+\( 2^{o}. \quad y_{i}=+1 \quad (\hat{y_{i}}=+1): \)
+\[
+\begin{align}
+-y_{i}log(h_{\theta}(\mathbf{x}_{i})) &amp; = -log(\frac{1}{1+e^{-\boldsymbol{\theta}^{T}\mathbf{x}_{i}}}) \\
+&amp; = log(1+e^{-\boldsymbol{\theta}^{T}\mathbf{x}_{i}}) \\
+&amp; = log(1+e^{-\hat{y_{i}}\boldsymbol{\theta}^{T}\mathbf{x}_{i}}). \tag{2.17}
+\end{align}
+\]
+此时LR的交叉熵可以改写为：
+\[
+J(\boldsymbol{\theta}) = \frac{1}{N}\sum_{i=1}^{N} log(1+e^{-\hat{y_{i}}\boldsymbol{\theta}^{T}\mathbf{x}_{i}}).
+\]
+这就是替代函数中Logistic Loss的形式,这也是为啥这个Loss函数要叫做Logistic Loss,这根本就是LR里迁过来的嘛.所以从这个角度看,LR也是去优化软间隔的,只不过这里设置的间隔为0(把\(\hat{y_{i}}\boldsymbol{\theta}^{T}\mathbf{x}_{i}\)看作\(\hat{y_{i}}(\boldsymbol{\theta}^{T}\mathbf{x}_{i}-0)\),注意LR里面定义的\(\boldsymbol{\theta}, \mathbf{x}\)与SVM里定义的\(\mathbf{w}, \mathbf{x}, b\)稍微有点区别).观察使用Logistic Loss的软间隔SVM的目标函数的形式,发现与LR只是多了一个L2范数(如果让\(C=1/N\)),所以我们也许可以认为使用Logistic Loss的软间隔SVM可以看作是LR+L2范数的模型.</p>
+
+<p>LR和SVM的一个重要区别:<strong>SVM</strong>是对带有间隔的超平面进行建模的,是<strong>非概率模型</strong>;而<strong>LR</strong>是对分布的条件概率进行建模的,是<strong>概率模型</strong>.其实从模型上可以很直观的看出SVM确实是个非概率模型,SVM把\(\mathbf{w}^{T}\mathbf{x}+b \geq 1\)的分类成\(y=+1\);把\(\mathbf{w}^{T}\mathbf{x}+b \leq -1\)的分类成\(y=-1\).换句话说,其实SVM最终的决策函数是符号函数\(sign(z)\).这显然不符合概率的定义嘛,所以是非概率模型.而且SVM的基本思想也不是从概率的角度出发的,更不是概率模型了!</p>
+
+<p>(注:李航那本书上说LR可以看作是概率模型也可以看作是非概率模型)</p>
+
+<h2 id="toc_12">Reference</h2>
+
+<p>[1] 周志华.机器学习[M].北京:清华大学出版社,2016:121-125,129-131.</p>
+
+<p>[2] <a href="https://github.com/fengdu78/Coursera-ML-AndrewNg-Notes">斯坦福大学2014(吴恩达)机器学习教程中文笔记</a></p>
+
+
+
+<script type="text/x-mathjax-config">
+(function () {
+
+MathJax.Hub.Config({
+	'showProcessingMessages': false,
+	'messageStyle': 'none'
+});
+
+if (typeof MathJaxListener !== 'undefined') {
+	MathJax.Hub.Register.StartupHook('End', function () {
+		MathJaxListener.invokeCallbackForKey_('End');
+	});
+}
+
+})();
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+</body>
+
+</html>
